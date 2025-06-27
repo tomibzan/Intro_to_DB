@@ -14,15 +14,20 @@ def create_database():
         if connection.is_connected():
             cursor = connection.cursor()
 
-            cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
-            print("Database 'alx_book_store' created successfully!")
+            try:
+                cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
+                print("Database 'alx_book_store' created successfully!")
+            except Error as db_error:
+                print(f"Error creating database: {db_error}")
+            finally:
+                cursor.close()
 
     except Error as e:
-        print(f"Error connecting to MySQL: {e}")
+        print(f"Failed to connect to MySQL server: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
     finally:
-        # Close the connection
         if connection and connection.is_connected():
-            cursor.close()
             connection.close()
             print("MySQL connection is closed")
 
