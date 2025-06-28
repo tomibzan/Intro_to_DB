@@ -1,4 +1,4 @@
-import mysql.connector import subprocess def get_table_names(): try: connection = mysql.connector.connect(
+import mysql.connector import subprocess def SHOW_TABLE(): try: connection = mysql.connector.connect(
     host = "localhost",
     user = "root",
     password = "alxbe",
