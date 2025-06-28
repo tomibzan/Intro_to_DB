@@ -11,25 +11,19 @@ def create_database():
             password='alxbe'
         )
 
-        if connection.is_connected():
-            cursor = connection.cursor()
+        cursor = connection.cursor()
+        cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
+        print("Database 'alx_book_store' created successfully!")
 
-            try:
-                cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
-                print("Database 'alx_book_store' created successfully!")
-            except Error as db_error:
-                print(f"Error creating database: {db_error}")
-            finally:
-                cursor.close()
-
-    except Error as e:
-        print(f"Failed to connect to MySQL server: {e}")
+    except Error as db_error:
+        print(f"MySQL Error: {db_error}")
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        print(f"Unexpected error: {e}")
     finally:
-        if connection and connection.is_connected():
-            connection.close()
-            print("MySQL connection is closed")
+        if connection:
+            if connection.is_connected():
+                connection.close()
+                print("MySQL connection is closed")
 
 
 if __name__ == "__main__":
