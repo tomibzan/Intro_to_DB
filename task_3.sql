@@ -1,10 +1,14 @@
-import mysql.connector import subprocess def SHOW_TABLE(): try: connection = mysql.connector.connect(
-    host = "localhost",
-    user = "root",
-    password = "alxbe",
-    database = "alx_book_store"
-) cursor = connection.cursor() cursor.execute(
-    "SELECT table_name FROM information_schema.tables WHERE table_schema = 'alx_book_store'"
-) tables = cursor.fetchall() table_names = [table[0] for table in tables ] return table_names
-except mysql.connector.Error as err: print(f "Error: {err}") return [] finally: if connection.is_connected(): cursor.close() connection.close() def run_mysql_command(table_list): tabel_str = " ".join(table_list) command = f 'mysql -u root -palxbe -D alx_book_store -e "SELECT * FROM {table_list[0]} LIMIT 5;"' subprocess.run(command, shell = True) if __name__ == "__main__": tables = get_table_names() if tables: print("Tables in 'alx_book_store':", tables) run_mysql_command(tables)
-    else: print("No tables found in 'alx_book_store'.")
+# from getpass import getpass
+from getpass import getpass
+from mysql.connector import connect,
+    Error import subprocess try: with connect(
+        host = "localhost",
+        user = input("Enter your username: "),
+        password = getpass("Enter password: "),
+        database = "alx_book_store"
+    ) as connection: with connection.cursor() as cursor: cursor.execute("SHOW TABLES") tables = [row[0] for row in cursor.fetchall() ] if tables: print("Tables found:", tables) # Join table names for use in shell command
+    tables_arg = ' '.join(tables) # Prompt for password again for shell use (optional security)
+    db_user = input("Re-enter your username for shell command: ") db_pass = getpass("Re-enter password for shell command: ") # Construct mysql command
+    cmd = f 'mysql -u {db_user} -p{db_pass} -e "USE alx_book_store; SHOW CREATE TABLE {tables_arg};"' print("Running command:", cmd) subprocess.run(cmd, shell = True)
+    else: print("No tables found.")
+except Error as e: print("Error while connecting to MySQL:", e)
