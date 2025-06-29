@@ -8,7 +8,7 @@ from mysql.connector import connect,
         password = password,
         database = db_name
     ) as connection: insert_query = """
-        INSERT INTO Customers (customer_id, customer_name, email, address)
+        INSERT INTO customer (customer_id, customer_name, email, address)
         VALUES (%s, %s, %s, %s)
         """ # List of customers to insert
     customer_data = [
